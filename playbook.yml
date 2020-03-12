@@ -1,0 +1,24 @@
+---
+- name: Install docker & docker-compose
+  hosts: all
+  become: yes
+
+  tasks:
+    - shell: "hostname"
+      register: hostname
+
+    - debug:
+        msg: "{{hostname.stdout}}"
+
+  vars:
+    pip_install_packages:
+      - name: docker
+    docker_compose_version: "1.25.4"
+    docker_edition: "ce"
+    docker_package: "docker-{{ docker_edition }}-19.03.8"
+
+
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+
