@@ -3,22 +3,67 @@
   hosts: all
   become: yes
 
-  tasks:
-    - shell: "hostname"
-      register: hostname
-
-    - debug:
-        msg: "{{hostname.stdout}}"
-
   vars:
-    pip_install_packages:
-      - name: docker
+    docker_install_compose: true
     docker_compose_version: "1.25.4"
+    docker_pip_version: "4.2.0"
     docker_edition: "ce"
     docker_package: "docker-{{ docker_edition }}-19.03.8"
 
+  pre_tasks:
+
+    - name: Install EPEL Repo package from standard repo
+      yum:
+        name: epel-release
+        state: installed
+
+    - name: Install pip & python headers
+      yum:
+        name:
+          - "python-devel"
+          - "python-pip"
+        state: installed
+        update_cache: yes
+
+    - name: Update pip to latest version
+      pip:
+        name: pip
+        extra_args: --upgrade
+
+    - name: Pip install docker and docker-compose
+      pip:
+        name:
+          - "docker=={{docker_pip_version}}"
+          - "docker-compose=={{docker_compose_version}}"
+  
 
   roles:
-    - geerlingguy.pip
     - geerlingguy.docker
+
+  tasks:
+    - name: Create docker group
+      group:
+        name: docker
+        state: present
+
+    - name: Add vagrant user to docker group
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
+
+
+- name: Run docker-compose services
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Create and start services
+      docker_compose:
+        project_src: /vagrant/
+      register: output
+
+    - debug:
+        var: output
+
 
