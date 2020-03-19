@@ -10,34 +10,8 @@
     docker_edition: "ce"
     docker_package: "docker-{{ docker_edition }}-19.03.8"
 
-  pre_tasks:
-
-    - name: Install EPEL Repo package from standard repo
-      yum:
-        name: epel-release
-        state: installed
-
-    - name: Install pip & python headers
-      yum:
-        name:
-          - "python-devel"
-          - "python-pip"
-        state: installed
-        update_cache: yes
-
-    - name: Update pip to latest version
-      pip:
-        name: pip
-        extra_args: --upgrade
-
-    - name: Pip install docker and docker-compose
-      pip:
-        name:
-          - "docker=={{docker_pip_version}}"
-          - "docker-compose=={{docker_compose_version}}"
-  
-
   roles:
+    - install_docker_requirements
     - geerlingguy.docker
 
   tasks:
@@ -58,12 +32,12 @@
   become: yes
 
   tasks:
+    - name: Tear down existing services
+      docker_compose:
+        project_src: /vagrant/
+        state: absent
+
     - name: Create and start services
       docker_compose:
         project_src: /vagrant/
-      register: output
-
-    - debug:
-        var: output
-
-
+        build: yes

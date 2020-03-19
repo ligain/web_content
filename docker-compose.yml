@@ -5,9 +5,10 @@ services:
   nginx:
     image: nginx:1.16
     volumes:
-     - ./nginx.conf:/etc/nginx/conf.d/default.conf
+     - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
-     - "8080:80"
+     - "8080:5000"
+     - "8090:5001"
     command: /bin/bash -c "nginx -g 'daemon off;'"
     links:
      - django
@@ -16,3 +17,8 @@ services:
     build: ./Try-Django-2.2/
     expose:
       - 8000
+
+  sanic:
+    build: ./sanic/
+    expose:
+      - 8081

@@ -1,0 +1,24 @@
+---
+- name: Install EPEL Repo package from standard repo
+  yum:
+    name: epel-release
+    state: installed
+
+- name: Install pip & python headers
+  yum:
+    name:
+      - "python-devel"
+      - "python-pip"
+    state: installed
+    update_cache: yes
+
+- name: Update pip to latest version
+  pip:
+    name: pip
+    extra_args: --upgrade
+
+- name: Pip install docker and docker-compose
+  pip:
+    name:
+      - "docker=={{docker_pip_version}}"
+      - "docker-compose=={{docker_compose_version}}"
