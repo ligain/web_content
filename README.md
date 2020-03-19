@@ -1,3 +1,4 @@
+
 # Multi service  practice
 The project consists of 2 microservices:
 1) Django project ( cloned from [here](https://github.com/codingforentrepreneurs/Try-Django-2.2) ).
@@ -30,7 +31,11 @@ $ cd web_content/
 ```bash  
 $ vagrant up
 ```
-4) 
+4) Try URL [http://localhost:8080/](http://localhost:8080/)
+![enter image description here](https://raw.githubusercontent.com/ligain/web_content/master/screenshots/django.jpg)
+
+5) Try URL [http://localhost:8090/](http://localhost:8090/)
+![enter image description here](https://raw.githubusercontent.com/ligain/web_content/master/screenshots/sanic.jpg)
 
 # Project Goals 
 The code is written for educational purposes.
