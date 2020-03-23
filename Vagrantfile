@@ -3,8 +3,8 @@
 
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "centos/7"
-  config.vm.box_version = "1905.1"
+  config.vm.box = "bento/centos-8"
+  config.vm.box_version = "202002.04.0"
   config.vm.network "forwarded_port", guest: 8080, host: 8080
   config.vm.network "forwarded_port", guest: 8090, host: 8090
 

@@ -1,24 +1,26 @@
 ---
 - name: Install EPEL Repo package from standard repo
-  yum:
+  dnf:
     name: epel-release
     state: installed
 
-- name: Install pip & python headers
-  yum:
+- name: Install\update pip3, python3 and python headers
+  dnf:
     name:
-      - "python-devel"
-      - "python-pip"
+      - "python3-devel"
+      - "python3-pip"
     state: installed
     update_cache: yes
 
-- name: Update pip to latest version
+- name: Update pip
   pip:
-    name: pip
+    name: "pip=={{pip_version}}"
     extra_args: --upgrade
+    executable: pip3
 
 - name: Pip install docker and docker-compose
   pip:
     name:
       - "docker=={{docker_pip_version}}"
       - "docker-compose=={{docker_compose_version}}"
+    executable: pip3
